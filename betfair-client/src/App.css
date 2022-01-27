@@ -7,7 +7,10 @@
   font-size: 20px;
   border-radius: 5px;
   border: 1px white solid;
-  margin: 1px;
+}
+
+.roulette-number-box.even-selector {
+  width: 15%;
 }
 
 .roulette-number-box:hover {
@@ -17,6 +20,11 @@
 .roulette-button-group {
   display: flex;
   flex-direction: column-reverse;
+  width: 7.5%;
+}
+
+.roulette-button-group.wide {
+  width: 10%;
 }
 
 #roulette-numbers {
@@ -27,6 +35,8 @@
 #betting-zone {
   background-color: #565656;
   padding: 50px;
+  display: flex;
+  flex-direction: column;
 }
 
 #chat {
