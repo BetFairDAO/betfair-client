@@ -79,4 +79,12 @@ export const ROULETTE_WHEEL = [
     35,
     3,
     26
-]
+];
+
+export const ROULETTE_CHIPS = {
+    1: "#6C7BFF",
+    5: "#D16463",
+    10: "#65BE4E",
+    25: "#A74AA9",
+    50: "#D2CE6A"
+}
