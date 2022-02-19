@@ -6,10 +6,8 @@
 
 import { useState } from "react";
 import { Grid } from "@mui/material";
-import { Box } from "@mui/system";
 import { Wheel } from "react-custom-roulette";
 import { ROULETTE_COLOURS, ROULETTE_WHEEL, ROULETTE_WHEEL_COLOURS } from "../utils/roulette_config";
-import Chat from "./chat";
 import RouletteBox from "./RouletteBox";
 import RouletteSingleBox from "./RouletteSingleBox";
 import RouletteChipSelectors from "./RouletteChipSelectors";
@@ -276,7 +274,7 @@ function RouletteTable(props) {
 
     return (
         <Grid container>
-            <Grid item xs={9}>
+            <Grid item xs={12}>
                 <div className="roulette-table">
                     <div className="upper-segment-wrapper">
                         <div className="active-bet-frame">
@@ -302,9 +300,6 @@ function RouletteTable(props) {
                     </div>
                     {bettingZone}
                 </div>
-            </Grid>
-            <Grid item xs={3}>
-                <Chat />
             </Grid>
         </Grid>
     )
