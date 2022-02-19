@@ -8,11 +8,41 @@ import { useState } from "react";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Wheel } from "react-custom-roulette";
-import { ROULETTE_WHEEL, ROULETTE_WHEEL_COLOURS } from "../utils/roulette_config";
+import { ROULETTE_COLOURS, ROULETTE_WHEEL, ROULETTE_WHEEL_COLOURS } from "../utils/roulette_config";
 import Chat from "./chat";
 import RouletteBox from "./RouletteBox";
+import RouletteSingleBox from "./RouletteSingleBox";
 import RouletteChipSelectors from "./RouletteChipSelectors";
 
+function BetIndicator(props) {
+    return (
+        <div className="bet-indicator">
+            <Grid container>
+                <Grid item xs={2}>
+                    {props.id}
+                </Grid>
+                <Grid item xs={3}>
+                    {props.nums.join(", ")}
+                </Grid>
+                <Grid item xs={2}>
+                    {props.betValue} ODC
+                </Grid>
+                <Grid item xs={2}>
+                    2:1
+                </Grid>
+                <Grid item xs={3}>
+                    200 ODC
+                </Grid>
+            </Grid>
+        </div>
+    )
+}
+
+/**
+ * Main game component to hold all game states & render wheel + betting zone
+ * @param props 
+ * @returns 
+ */
 function RouletteTable(props) {
     const [activeBets, setActiveBets] = useState([]); // State to maintain list of active bets
     const [selectedZone, setSelectedZone] = useState(); // State to hold details of zone clicked by user
@@ -28,7 +58,6 @@ function RouletteTable(props) {
                 nums: nums,
                 betValue: selectedChip
             }
-            console.log(newBet);
             let updatedActiveBets = [...activeBets, newBet];
             setActiveBets(updatedActiveBets);
         }
@@ -158,29 +187,65 @@ function RouletteTable(props) {
         );
     }
 
+    function handleRowSelectorClick(y) {
+        if (y === 2) {
+            makeBet([3,6,9,12,15,18,21,24,27,30,33,36]);
+        } else if (y === 1) {
+            makeBet([2,5,8,11,14,17,20,23,26,29,32,35]);
+        } else if (y === 0) {
+            makeBet([1,4,7,10,13,16,19,22,25,28,31,34]);
+        }
+    }
+
     // Add 3 button group to end of betting buttons array containing row bets
     bettingButtons.push(
         <div className="roulette-button-group wide">
-            <Box key="first-row" sx={{height: 75, backgroundColor: "#808080"}}className="roulette-number-box">2:1</Box>
-            <Box key="second-row" sx={{height: 75, backgroundColor: "#808080"}}className="roulette-number-box">2:1</Box>
-            <Box key="third-row" sx={{height: 75, backgroundColor: "#808080"}}className="roulette-number-box">2:1</Box>
+            <RouletteSingleBox key={2} height={75} handleClick={() => {handleRowSelectorClick(2)}} label="2:1" />
+            <RouletteSingleBox key={1} height={75} handleClick={() => {handleRowSelectorClick(1)}} label="2:1" />
+            <RouletteSingleBox key={0} height={75} handleClick={() => {handleRowSelectorClick(0)}} label="2:1" />
         </div>
     );
 
+    function handleColumnSelectorClick(x) {
+        if (x === 0) {
+            makeBet([1,2,3,4,5,6,7,8,9,10,11,12]);
+        } else if (x === 1) {
+            makeBet([13,14,15,16,17,18,19,20,21,22,23,24]);
+        } else if (x === 2) {
+            makeBet([25,26,27,28,29,30,31,32,33,34,35,36]);
+        }
+    }
+
     // Add additional betting buttons below numbers and row selectors
     let numRangeSelectors = [
-        <Box sx={{width: "30%", height: 50, backgroundColor: "#808080"}}className="roulette-number-box">1st 12</Box>,
-        <Box sx={{width: "30%", height: 50, backgroundColor: "#808080"}}className="roulette-number-box">2nd 12</Box>,
-        <Box sx={{width: "30%", height: 50, backgroundColor: "#808080"}}className="roulette-number-box">3rd 12</Box>
+        <RouletteSingleBox key={0} height={50} width="30%" handleClick={() => {handleColumnSelectorClick(0)}} label="1st 12" />,
+        <RouletteSingleBox key={1} height={50} width="30%" handleClick={() => {handleColumnSelectorClick(1)}} label="2nd 12" />,
+        <RouletteSingleBox key={2} height={50} width="30%" handleClick={() => {handleColumnSelectorClick(2)}} label="3rd 12" />
     ];
 
+    const _0_18 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+    const _19_36 = [19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36];
+    const _EVEN = [2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36];
+    const _ODD = [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35];
+    const _BLACK = [];
+    const _GOLD = []
+
+    // Read ROULETTE_WHEEL_COLOURS object and populate arrays
+    for (let [num, colour] of Object.entries(ROULETTE_WHEEL_COLOURS)) {
+        if (colour == ROULETTE_COLOURS.BLACK) {
+            _BLACK.push(num);
+        } else {
+            _GOLD.push(num);
+        }
+    }
+
     let evenSelectors = [
-        <Box sx={{height: 50, backgroundColor: "#808080"}}className="roulette-number-box even-selector">0-18</Box>,
-        <Box sx={{height: 50, backgroundColor: "#808080"}}className="roulette-number-box even-selector">Even</Box>,
-        <Box sx={{height: 50, backgroundColor: "#DAA520"}}className="roulette-number-box even-selector">Gold</Box>,
-        <Box sx={{height: 50, backgroundColor: "#000000"}}className="roulette-number-box even-selector">Black</Box>,
-        <Box sx={{height: 50, backgroundColor: "#808080"}}className="roulette-number-box even-selector">Odd</Box>,
-        <Box sx={{height: 50, backgroundColor: "#808080"}}className="roulette-number-box even-selector">19-36</Box>
+        <RouletteSingleBox key={0} height={50} width="15%" handleClick={() => {makeBet(_0_18)}} label="1st 12" />,
+        <RouletteSingleBox key={0} height={50} width="15%" handleClick={() => {makeBet(_EVEN)}} label="Even" />,
+        <RouletteSingleBox key={0} height={50} width="15%" backgroundColor="#DAA520" handleClick={() => {makeBet(_GOLD)}} label="Gold" />,
+        <RouletteSingleBox key={0} height={50} width="15%" backgroundColor="#000000" handleClick={() => {makeBet(_BLACK)}} label="Black" />,
+        <RouletteSingleBox key={0} height={50} width="15%" handleClick={() => {makeBet(_ODD)}} label="Odd" />,
+        <RouletteSingleBox key={0} height={50} width="15%" handleClick={() => {makeBet(_19_36)}} label="19-36" />
     ]
 
     
@@ -203,11 +268,28 @@ function RouletteTable(props) {
 
     );
 
+    let activeBetComponents = [];
+    for (let i = 0; i < activeBets.length; i++) {
+        let bet = activeBets[i];
+        activeBetComponents.push(<BetIndicator id={i+1} betValue={bet.betValue} nums={bet.nums} key={i}/>)
+    }
+
     return (
         <Grid container>
             <Grid item xs={9}>
                 <div className="roulette-table">
-                    <div id="wheel-placeholder">
+                    <div className="upper-segment-wrapper">
+                        <div className="active-bet-frame">
+                            <h1 className="heading">Active Bets</h1>
+                            <Grid container>
+                            <Grid item xs={2}><span className="table-heading">Bet #</span></Grid>
+                            <Grid item xs={3}><span className="table-heading">Bet Name</span></Grid>
+                            <Grid item xs={2}><span className="table-heading">Amount</span></Grid>
+                            <Grid item xs={2}><span className="table-heading">Odds</span></Grid>
+                            <Grid item xs={3}><span className="table-heading">Max Payout</span></Grid>
+                            </Grid>
+                            {activeBetComponents}
+                        </div>
                         <Wheel
                             mustStartSpinning={true}
                             prizeNumber={3}

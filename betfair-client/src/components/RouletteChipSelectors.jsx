@@ -5,8 +5,9 @@ import RouletteChip from "./RouletteChip";
 export default function RouletteChipSelectors(props) {
 
     let chipSelectors = [];
+    let index = 0;
     for (const [num, color] of Object.entries(ROULETTE_CHIPS)) {
-        chipSelectors.push(<RouletteChip value={num} color={color} selected={props.selected} setSelected={props.setSelected}>{num}</RouletteChip>)
+        chipSelectors.push(<RouletteChip key={index++} value={num} color={color} selected={props.selected} setSelected={props.setSelected}>{num}</RouletteChip>)
     }
     
 

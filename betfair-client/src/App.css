@@ -59,6 +59,8 @@
   height: 100%;
   width: 100%;
   position: relative;
+  align-items: center;
+ justify-content: center;
 }
 
 .inner-box-wrap:hover {
@@ -99,6 +101,40 @@
 
 .inner-box-wrap .click-zone-right {
   width: 25%;
+}
+
+.upper-segment-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.active-bet-frame {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  background-color: black;
+  border-radius: 25px;
+  margin: 2em;
+}
+
+.active-bet-frame .heading {
+  text-align: center;
+  color: rgb(206, 206, 206);
+}
+
+.active-bet-frame .bet-indicator {
+  color: rgb(206, 206, 206);
+  border: 1px solid rgb(245, 245, 245);
+  margin: 5px 25px 5px 25px;
+}
+
+.active-bet-frame .table-heading {
+  color: rgb(206, 206, 206);
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
 }
 
 #roulette-numbers {
